@@ -1,29 +1,21 @@
-import json
 import sqlite3
+import json
 
 # JSONファイルを読み込む
 with open('questions.json', 'r', encoding='utf-8') as f:
-    data = json.load(f)
+    questions = json.load(f)
 
-# DB接続
+# DBに接続
 conn = sqlite3.connect('quiz.db')
 cursor = conn.cursor()
 
-# データ挿入
-for item in data:
+# クイズをDBに挿入
+for q in questions:
     cursor.execute('''
         INSERT INTO quiz (question, answer, option1, option2, option3, description)
         VALUES (?, ?, ?, ?, ?, ?)
-    ''', (
-        item['question'],
-        item['answer'],
-        item['option1'],
-        item['option2'],
-        item['option3'],
-        item['description']
-    ))
+    ''', (q['question'], q['answer'], q['option1'], q['option2'], q['option3'], q['description']))
 
 conn.commit()
 conn.close()
-
-print("✅ JSONから問題をDBに保存しました。")
+print("✅ questions.json からクイズをDBに挿入しました")

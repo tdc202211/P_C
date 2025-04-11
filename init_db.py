@@ -1,9 +1,10 @@
 import sqlite3
 
+# DBに接続（なければ作成）
 conn = sqlite3.connect('quiz.db')
 cursor = conn.cursor()
 
-# 新しいテーブル定義（descriptionを追加）
+# クイズ問題テーブル（解説付き）
 cursor.execute('''
 CREATE TABLE IF NOT EXISTS quiz (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -16,7 +17,15 @@ CREATE TABLE IF NOT EXISTS quiz (
 )
 ''')
 
+# ユーザスコアテーブル
+cursor.execute('''
+CREATE TABLE IF NOT EXISTS user (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT NOT NULL,
+    score INTEGER NOT NULL
+)
+''')
+
 conn.commit()
 conn.close()
-
-print("✅ 新しいquizテーブルを作成しました。")
+print("✅ quiz.db を初期化しました（quiz + user テーブル）")

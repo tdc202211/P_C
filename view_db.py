@@ -3,17 +3,15 @@ import sqlite3
 conn = sqlite3.connect('quiz.db')
 cursor = conn.cursor()
 
+# クイズ一覧表示
+print("【クイズ一覧】")
 cursor.execute("SELECT * FROM quiz")
-rows = cursor.fetchall()
+for row in cursor.fetchall():
+    print(f"Q{row[0]}: {row[1]} / 答え: {row[2]} / 解説: {row[6]}")
 
-for row in rows:
-    print(f"ID: {row[0]}")
-    print(f"問題: {row[1]}")
-    print(f"正解: {row[2]}")
-    print(f"選択肢1: {row[3]}")
-    print(f"選択肢2: {row[4]}")
-    print(f"選択肢3: {row[5]}")
-    print(f"解説: {row[6]}")
-    print("-" * 40)
+print("\n【ユーザー成績】")
+cursor.execute("SELECT * FROM user ORDER BY score DESC, id ASC")
+for row in cursor.fetchall():
+    print(f"{row[0]}: {row[1]} → {row[2]}点")
 
 conn.close()
