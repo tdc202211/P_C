@@ -6,15 +6,10 @@
   <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body class="opening">
-  <!-- 動画の表示 -->
-  <video class="intro-video" autoplay muted loop>
+  <!-- ✅ ループ削除＋再生終了で遷移 -->
+  <video class="intro-video" autoplay muted onended="location.href='/quiz'">
     <source src="{{ url_for('static', filename='video.mp4') }}" type="video/mp4">
     お使いのブラウザは video タグに対応していません。
   </video>
-
-  <!-- ボタンでクイズへ進む -->
-  <div class="start-button-container">
-    <a href="/quiz" class="start-button">クイズをはじめる</a>
-  </div>
 </body>
 </html>
