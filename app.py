@@ -33,7 +33,11 @@ def get_question_by_id(qid):
             "description": description
         }
 
-@app.route("/", methods=["GET", "POST"])
+
+@app.route("/")
+def top():
+    return render_template("top.html")
+@app.route("/quiz",methods=["GET", "POST"])
 def quiz():
     # 初回アクセス時
     if "question_ids" not in session:
