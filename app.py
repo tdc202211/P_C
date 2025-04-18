@@ -33,7 +33,11 @@ def get_question_by_id(qid):
             "description": description
         }
 
-@app.route("/", methods=["GET", "POST"])
+
+@app.route("/")
+def top():
+    return render_template("top.html")
+@app.route("/quiz",methods=["GET", "POST"])
 def quiz():
     # 初回アクセス時
     if "question_ids" not in session:
@@ -75,17 +79,22 @@ def quiz():
             session["score"] += 1
         session["last_result"] = result
         session["last_description"] = description
+        session["is_correct"] = (selected == correct)
         session["show_description"] = True
         session.modified = True
-        return redirect("/")
+        return redirect("/quiz")
 
     # 解説ページ
     if show_description:
+        qid = ids[current]
+        question = get_question_by_id(qid)
         return render_template("description.html",
                                result=session["last_result"],
                                description=session["last_description"],
                                current=current + 1,
-                               total=len(ids))
+                               total=len(ids),
+                               is_correct=session.get("is_correct"),
+                               correct=question["answer"])
 
     # クイズ出題ページ
     qid = ids[current]
@@ -99,7 +108,7 @@ def next_question():
     session["current"] += 1
     session["show_description"] = False
     session.modified = True
-    return redirect("/")
+    return redirect("/quiz")
 
 if __name__ == "__main__":
     app.run(debug=True)
