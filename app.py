@@ -3,7 +3,7 @@ import sqlite3
 import random
 
 app = Flask(__name__)
-app.secret_key = "secret"  # セッション用（本番では強いキーを）
+app.secret_key = "secret"  # セッション用（本番では強いキーを設定）
 
 # クイズID順に全IDを取得
 def get_all_question_ids():
@@ -33,9 +33,14 @@ def get_question_by_id(qid):
             "description": description
         }
 
-@app.route("/", methods=["GET", "POST"])
+# トップページ（最初の動画）
+@app.route("/")
+def top():
+    return render_template("top.html")
+
+# クイズ進行
+@app.route("/quiz", methods=["GET", "POST"])
 def quiz():
-    # 初回アクセス時
     if "question_ids" not in session:
         session.clear()
         session["question_ids"] = get_all_question_ids()
@@ -63,7 +68,6 @@ def quiz():
 
         return render_template("name_input.html", total=len(ids), score=session["score"])
 
-    # POSTで解答が送られたとき
     if request.method == "POST":
         selected = request.form["choice"]
         qid = ids[current]
@@ -75,31 +79,46 @@ def quiz():
             session["score"] += 1
         session["last_result"] = result
         session["last_description"] = description
+        session["is_correct"] = (selected == correct)
         session["show_description"] = True
         session.modified = True
-        return redirect("/")
+        return redirect("/quiz")
 
-    # 解説ページ
     if show_description:
+        qid = ids[current]
+        question = get_question_by_id(qid)
         return render_template("description.html",
                                result=session["last_result"],
                                description=session["last_description"],
                                current=current + 1,
-                               total=len(ids))
+                               total=len(ids),
+                               is_correct=session.get("is_correct"),
+                               correct=question["answer"])
 
-    # クイズ出題ページ
     qid = ids[current]
     question = get_question_by_id(qid)
     return render_template("quiz.html", question=question["question"],
                            options=question["options"],
-                           correct=question["answer"])
+                           correct=question["answer"],
+                           current=current + 1)
 
+# 動画再生ページ（5問目や9問目の前）
+@app.route("/video/<int:step>")
+def show_video(step):
+    return render_template("video.html", step=step)
+
+# 次の問題へ
 @app.route("/next")
 def next_question():
     session["current"] += 1
     session["show_description"] = False
-    session.modified = True
-    return redirect("/")
+    current = session["current"]
+
+    # 5問目や9問目の前に動画ページを挿入（index 0始まり）
+    if current in [4, 8]:
+        return redirect(f"/video/{current + 1}")
+
+    return redirect("/quiz")
 
 if __name__ == "__main__":
     app.run(debug=True)
