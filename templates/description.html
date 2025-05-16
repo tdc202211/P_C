@@ -5,7 +5,7 @@
   <title>解説</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
-<body>
+<body class="{% if 5 <= current <= 8 %}green-bg{% elif current >= 9 %}red-bg{% endif %}">
   <div class="description-container">
     {% if is_correct %}
       <div class="effect correct">〇</div>
@@ -14,13 +14,12 @@
       <div class="effect wrong">×</div>
       <p><strong>不正解！正解は「{{ correct }}」</strong></p>
     {% endif %}
-
     <p class="description-text">{{ description }}</p>
     <p class="count">（{{ current }} / {{ total }}）</p>
-
     <form action="/next">
       <button type="submit" class="next-button">次の問題へ</button>
     </form>
   </div>
 </body>
+
 </html>

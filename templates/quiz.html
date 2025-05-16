@@ -5,10 +5,9 @@
   <title>漢字クイズ</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
-<body>
+<body class="{% if 5 <= current <= 8 %}green-bg{% elif current >= 9 %}red-bg{% endif %}">
   <div class="quiz-container">
     <h2 class="quiz-question">{{ question }}</h2>
-
     <form method="post">
       <div class="quiz-options">
         {% for option in options %}

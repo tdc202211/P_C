@@ -208,3 +208,11 @@ body, html {
     color: #4a2c91;
   }
   
+  /* ===== 背景切り替え ===== */
+.green-bg {
+  background-color: #06f349;  /* うすい緑 */
+}
+
+.red-bg {
+  background-color: #f70707;  /* うすい赤 */
+}
