@@ -36,7 +36,7 @@ def get_question_by_id(qid):
 # トップページ（最初の動画）
 @app.route("/")
 def top():
-    return render_template("top.html")
+    return render_template("start.html")
 
 # クイズ進行
 @app.route("/quiz", methods=["GET", "POST"])
