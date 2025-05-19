@@ -15,6 +15,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
+            gap: 20px; /* ボタンの間隔 */
             height: 40vh;
         }
 
@@ -44,6 +45,19 @@
             font-size: 30px;
             padding: 20px;
         }
+
+        h2 {
+        background-color: #ffffffcc;
+        border: 2px solid #3ba0df;
+        border-radius: 15px;
+        padding: 20px;
+        margin: 20px auto;
+        width: 80%;
+        font-size: 20px;
+        line-height: 1.8;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        color: #333;
+    }
     </style>
 </head>
 
@@ -59,7 +73,8 @@
         下のボタンを押して、初めてね。
     </h2>
     <div class="center-button">
-        <button onclick="location.href='/top'">スタート！</button>
-    </div>
+    <button onclick="location.href='/top'">スタート！</button>
+    <button onclick="location.href='/result'">ランキング</button>
+</div>
 </body>
 </html>

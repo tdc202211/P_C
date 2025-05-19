@@ -42,6 +42,16 @@ def top():
 def top2():
     return render_template("top.html")
 
+@app.route("/result")
+def top3():
+    name="ゲスト"
+    score=0
+    conn = sqlite3.connect('quiz.db')
+    cursor = conn.cursor()
+    cursor.execute("SELECT name, score FROM user ORDER BY score DESC, id ASC")
+    rankings = cursor.fetchall()
+    return render_template("result.html", name=name, score=score,  rankings=rankings)
+
 # クイズ進行
 @app.route("/quiz", methods=["GET", "POST"])
 def quiz():
