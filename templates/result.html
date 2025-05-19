@@ -9,12 +9,24 @@
   <div class="result-container">
     <h2>{{ name }}さん：{{ score }}問正解！</h2>
 
-    <h3>過去の成績（ランキング風）</h3>
-    <ol>
-      {% for n, s in rankings %}
-        <li>{{ n }}：{{ s }}問正解</li>
-      {% endfor %}
-    </ol>
+    <h3>過去の成績（ランキング）</h3>
+<ol class="ranking-list">
+  {% for n, s in rankings %}
+    <li class="ranking-item {% if loop.index0 == 0 %}gold{% elif loop.index0 == 1 %}silver{% elif loop.index0 == 2 %}bronze{% endif %}">
+      <span class="rank-number">
+        {% if loop.index0 == 0 %}🥇
+        {% elif loop.index0 == 1 %}🥈
+        {% elif loop.index0 == 2 %}🥉
+        {% else %}{{ loop.index }}位
+        {% endif %}
+      </span>
+      <span class="rank-name">{{ n }}</span>
+      <span class="rank-score">{{ s }}問正解</span>
+    </li>
+  {% endfor %}
+</ol>
+
+
 
     <a href="/" class="restart-link">最初からやり直す</a>
   </div>
