@@ -38,6 +38,10 @@ def get_question_by_id(qid):
 def top():
     return render_template("start.html")
 
+@app.route("/top")
+def top2():
+    return render_template("top.html")
+
 # クイズ進行
 @app.route("/quiz", methods=["GET", "POST"])
 def quiz():
