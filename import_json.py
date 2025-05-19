@@ -14,7 +14,7 @@ for q in questions:
     cursor.execute('''
         INSERT INTO quiz (question, answer, option1, option2, option3, description)
         VALUES (?, ?, ?, ?, ?, ?)
-    ''', (q['question'], q['answer'], q['option1'], q['option2'], q['option3'], q['description']))
+    ''', (q['question'], q['correct'], q['option1'], q['option2'], q['option3'], q['description']))
 
 conn.commit()
 conn.close()
